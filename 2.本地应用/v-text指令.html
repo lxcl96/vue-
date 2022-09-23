@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-text指令</title>
+</head>
+<body>
+
+    <div id="app">
+        <!-- 全部替换，可直接字符串拼接 类似于themeleaf的${}-->
+        <h1 v-text="message + '!' + info">哈哈</h1>
+        <!--差值替换，可以进行字符串拼接(不是data域中的数据必须加上引号，否则会报错)，类似thymeleaf的[[]]-->
+        <h1>{{message + '!' + info}}哈哈</h1>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                message: "v-text",
+                info: "ヾ(•ω•`)o"
+            }
+        });
+    </script>
+</body>
+</html>
