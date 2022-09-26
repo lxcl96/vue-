@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习：记事本</title>
+</head>
+<body>
+    记事本 <br>
+    <div id="app">
+        <!-- 回车新增元素-->
+        <input type="text" v-model="noteCurrent" @keyup.enter="add"> <br>
+        <table>
+            <tr v-for="(note,index) in noteArr" >
+                <td>
+                    <input type="text"  :value="index+1 + ' - ' + note" disabled>  <button @click="del(index)">x</button>
+                </td>
+            </tr>
+            <tr v-show="noteArr.length>0">
+                <td>
+                    {{noteArr.length}} items left 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button @click="clear">clear</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                noteArr:["吃饭饭","睡觉觉","洗手手"],
+                noteCurrent:""
+            },
+            methods:{
+                //<!-- 删除单个元素-->
+                del:function(index){
+                    //<!-- 根据元素位置删除元素-->
+                    this.noteArr.splice(index,1);
+                },
+                //<!-- 增加元素-->
+                add:function(){ 
+                    if(this.noteCurrent.length > 0) {
+                        this.noteArr.push(this.noteCurrent);
+                    }
+                },
+                //<!-- 清空--> 
+                clear:function(){
+                    this.noteArr=[]; //记住是空数组哦
+                }
+            }
+        });
+    </script>
+</body>
+</html>

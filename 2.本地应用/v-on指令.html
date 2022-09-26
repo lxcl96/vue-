@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-on指令</title>
+</head>
+<body>
+
+    <div id="app">
+        <!-- v-on:事件="方法名" -->
+        <input type="button" value="v-on指令" v-on:click="hello"> <br>
+        <!-- 上面可缩写为：@click=hello" --> 
+        <input type="button" value="v-on指令缩写" v-on:click="hello"> <br>
+        <input type="button" value="双击" v-on:dblclick="hello">  <br>
+        <!-- vue中改变数据 (VUE是数据驱动页面，数据变了页面会自动变化) -->
+        <input type="button" value="点击改变页面数据" v-on:click="changeFood"> {{food}}
+
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                food:"西兰花炒蛋"
+            },
+            // 由此可以看出方法放在methods域中，数据放在data域中
+            methods:{
+                hello:function(){alert("hello ")},
+                changeFood:function() {
+                    //在vue中通过this得到所有属性
+                    console.log(this.food);
+                    this.food = "番茄炒蛋";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

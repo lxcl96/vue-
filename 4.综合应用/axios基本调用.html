@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>axios的基本使用</title>
+</head>
+<body>
+    
+    <input type="button" value="get" class="get"> <br>
+    <input type="button" value="post" class="post">
+
+    <!-- 官网提供的 axios 在线地址 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        /*
+            接口1:https://api.apiopen.top/api/sentences
+        */
+       document.querySelector(".get").onclick=function() {
+            axios.get("https://api.apiopen.top/api/sentences1").then(
+                function(response){
+                    console.log(response);
+                },
+                function(err){
+                    console.log(err);
+                }
+            )
+       }
+
+        /*
+            接口2:用户注册
+            请求地址:https://autumnfish.cn/api/user/reg
+            请求方法:post
+            请求参数:username(用户名,字符串)
+            响应内容:注册成功或失败
+        */
+        document.querySelector(".post").onclick=function() {
+            axios.post("https://api.apiopen.top/api/login",{account:'admin',password:'123'}).then(
+                function(response){
+                    console.log(response);
+                },
+                function(err){
+                    console.log(err);
+                }
+            )
+       }
+    </script>
+</body>
+</html>

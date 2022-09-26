@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-show指令</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 标签中写入vue中的数据，直接调用不需要加{{}} -->
+        <img src="../Note/img/image-20220923154209018.png" v-show="isShow"/> <br>
+        <button @click="change">点击隐藏或显示</button>
+        <img src="../Note/img/image-20220923154209018.png" v-show="17<18"/> <br>
+        {{age<18}}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                isShow:true,
+                age:17
+            },
+            methods:{
+                change:function(){
+                    console.log(this.isShow)
+                    this.isShow=!this.isShow;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
