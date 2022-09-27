@@ -406,7 +406,7 @@ vue不同于其他框架是基于dom操作页面元素，vue中使用一系列v-
 ```
 <font color='red'>第一个回调函数（回参response）会在请求响应完成后触发，第二个回调函数（回参err）会在请求响应失败后触发</font>
 
-+ **`axios.get("地址"?参数).then(function(response){},function(err){})` **
++ **`axios.get("地址?参数").then(function(response){},function(err){})` **
 + **`axios.post("地址",{k:v}).then(function(response){},function(err){})` **
 
 > 测试接口库：
@@ -424,7 +424,48 @@ vue不同于其他框架是基于dom操作页面元素，vue中使用一系列v-
 >      响应内容:注册成功或失败
 >  */
 > ```
->
-> 
+
+## 2、axios结合vue
+
+```html
+<body>
+
+    <!-- 随机古诗 -->
+    <div id="app">
+        <h1>{{content}}</h1>
+        <h1>-- {{author}}</h1>
+        <button @click="getOne">换一个</button>
+    </div>
+     <!-- 官网提供的 axios 在线地址 -->
+     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+     <script>
+        let app = new Vue({
+            el:"#app",
+            data:{
+                content:"不如子之衣，安且吉兮。",
+                author:"佚名《无衣》"
+            },
+            methods:{
+                getOne:function(){
+                    let vueThis = this;
+                    axios.get("https://api.apiopen.top/api/sentences").then(
+                        function(response){
+                            //在axios中this就不是vue了，所以需要在外面先保存vue的this
+                            vueThis.content=response.data.result.name;
+                            vueThis.author=response.data.result.from
+                        },
+                        function(err){
+                            console.log(err);
+                        }
+                    );
+                }
+            }
+        });
+     </script>
+</body>
+```
+
+
 
 # 第四章：综合应用

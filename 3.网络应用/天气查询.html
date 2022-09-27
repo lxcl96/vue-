@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气查询</title>
+</head>
+<body>
+
+    <div id="app">
+        <input type="text" v-model="city" @keyup.enter="getCityCode(city)" placeholder="请输入城市名称!">
+        <p v-if="weather.temp!=''">
+            {{city}},今天气压{{ap}},{{wd + ws}},气温{{temp}}摄氏度,湿度{{sd}}!
+        </p>
+    </div>
+     <!-- 官网提供的 axios 在线地址 -->
+     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        /*
+        请求地址:http://www.iot2ai.top/cgi-bin/intel/weather.txt?city=
+        请求方法:get
+        请求参数:city(城市名)
+        响应内容:城市代码集合
+
+
+        请求地址:http://www.weather.com.cn/data/sk/城市代码.html
+        请求方法:get
+        响应内容:天气
+        
+
+        1. 点击回车
+        2. 查询数据
+        3. 渲染数据
+        */
+        
+        
+        // 请求头
+        
+        const config = {
+            headers:{
+                "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+            }
+        }
+        let getWeather = function(vueThis) {
+            console.log(vueThis.weather);
+            if(vueThis.weather.cityCode=="") {
+                alert("请输入正确的城市名");
+                return;
+            }
+            axios.get("http://www.weather.com.cn/data/sk/"+ vueThis.weather.cityCode +".html",config).then({
+                function(response){
+                    // console.log(response);
+                    vueThis.weather.ap=response.weatherinfo.ap;
+                    vueThis.weather.sd=response.weatherinfo.sd;
+                    vueThis.weather.wd=response.weatherinfo.wd;
+                    vueThis.weather.ws=response.weatherinfo.ws;
+                    vueThis.weather.temp=response.weatherinfo.temp;
+                },
+                function(err){
+                    console.log(err);
+                    alert("网络异常!");
+                }
+            });
+        }
+
+
+
+        
+
+        let app=new Vue({
+            el:"#app",
+            data:{
+                weather:{
+                    cityCode:"",
+                    ap:"",
+                    sd:"",
+                    wd:"",
+                    ws:"",
+                    city:"",
+                    temp:""
+                }
+            },
+            methods:{
+                getCityCode:function(cityName){
+                    let vueThis = this;
+                    axios.get("http://www.iot2ai.top/cgi-bin/intel/weather.txt?city=" + cityName,config).then(
+                        function(response){                      
+                            for(index in response.data.list) {
+                                let obj = response.data.list[index];
+                                // console.log(obj);
+                                if(obj.city == cityName) {
+                                    vueThis.weather.cityCode=obj.code;
+                                    vueThis.weather.city=obj.city;
+                                    break;
+                                }
+                            }
+                            // console.log(vueThis.weather);
+                            getWeather(vueThis);
+                        },
+                        function(err){
+                            alert("网络异常!");
+                        }
+                    )
+                
+                }
+            }
+        });
+    </script>
+</body>
+</html>

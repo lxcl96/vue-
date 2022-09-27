@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>mini播放器</title>
+  <!-- 样式 -->
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="shortcut icon" href="./images/person01.png" >
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- 播放器主体区域 -->
+    <div class="play_wrap" id="player">
+      <div class="search_bar">
+        <img src="images/player_title.png" alt="" />
+        <!-- 搜索歌曲 -->
+        <input type="text" autocomplete="off" v-model="query" @keyup.enter="searchMusic" placeholder="请输入歌曲或歌手"/>
+      </div>
+      <div class="center_con">
+        <!-- 搜索歌曲列表 -->
+        <div class='song_wrapper'>
+          <ul class="song_list">
+            <li v-for="item in musicList">
+              <!-- href="javascript:;"意思是执行了一条空的js代码,类似于 href="javascript:void(0);" 用于阻止href跳转 -->
+              <a href="javascript:;" @click="playMusic(item.id)"></a> 
+              <b>{{item.name + ' - '  + item.artists[0].name}}</b> 
+              <span v-show="item.mvid!=''" @click="mvPlay(item.mvid)"><i></i></span>
+            </li>
+          </ul>
+          <img src="images/line.png" class="switch_btn" alt="">
+        </div>
+        <!-- 歌曲信息容器 -->
+        <div class="player_con" :class="{playing:isPlaying}">
+          <img src="images/player_bar.png" class="play_bar" />
+          <!-- 黑胶碟片 -->
+          <img src="images/disc.png" class="disc autoRotate" />
+          <img  :src="playIngImg" class="cover autoRotate" />
+        </div>
+        <!-- 评论容器 -->
+        <div class="comment_wrapper">
+          <h5 class='title'>热门留言</h5>
+          <div class='comment_list'>
+            <dl v-for="com in comList">
+              <dt><img :src="com.user.avatarUrl" alt="用户头像"></dt>
+              <dd class="name">{{com.user.nickname}}</dd>
+              <dd class="detail">
+                {{com.content}}
+              </dd>
+              <dd class="detail">👍 &nbsp;{{com.likedCount}}</p>
+            </dl>
+          </div>
+          <img src="images/line.png" class="right_line">
+        </div>
+      </div>
+      <div class="audio_con">
+        <audio :src='playIngUrl' ref='audio' @play="switchPlay(true)" @pause="switchPlay(false)" controls autoplay loop class="myaudio" ></audio>
+      </div>
+      <div class="video_con"  v-show="mvUrl!=''">
+        <video :src="mvUrl" controls="controls"></video>
+        <div class="mask" @click="cancle" @keyup.esc="cancle"></div>
+      </div>
+    </div>
+  </div>
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- 官网提供的 axios 在线地址 -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+
+</html>
